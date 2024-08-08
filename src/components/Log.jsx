@@ -1,11 +1,13 @@
-export default function Log({ turns }) {
+export default function Log({ playerNames, turns }) {
     const log = turns.map((turn, index) => {
         const { square, player } = turn;
         const { row, col } = square;
+        let currPlayerName = playerNames.X;
+        if (player === 'X' ? currPlayerName = playerNames.X : currPlayerName = playerNames.O)
 
         return (
             <li key={index}>
-                Player {player} selected row {row}, column {col}
+                {currPlayerName} selected row {row}, column {col}
             </li>
         );
     });
