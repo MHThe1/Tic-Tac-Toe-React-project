@@ -6,6 +6,9 @@ import Log from "./components/Log.jsx";
 import { WINNING_COMBINATIONS } from "./winning-combinations.js";
 import GameOver from "./components/GameOver.jsx";
 
+import Header from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx"
+
 const PLAYERS = {
   'X': 'Player 1',
   'O': 'Player 2',
@@ -95,6 +98,7 @@ function App() {
   }
 
   return <main>
+    <Header />
     <div id="game-container">
       <ol id="players" className="highlight-player">
         <Player 
@@ -113,6 +117,7 @@ function App() {
         board={gameBoard} />
     </div>
     <Log playerNames={players} turns={gameTurns} />
+    <Footer />
   </main>;
 }
 

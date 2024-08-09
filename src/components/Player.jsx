@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 
-export default function Player({ initialName, symbol, isActive, onNameChange}) {
+export default function Player({ initialName, symbol, isActive, onNameChange }) {
     const [playerName, setPlayerName] = useState(initialName);
     const [isEditing, setIsEditing] = useState(false);
 
+    const inputRef = useRef(null);
+
     function handleEditClick() {
         setIsEditing((editing) => !editing);
-        if (isEditing){
+        if (isEditing) {
             onNameChange(symbol, playerName);
         }
     }
@@ -16,18 +18,35 @@ export default function Player({ initialName, symbol, isActive, onNameChange}) {
         setPlayerName(event.target.value);
     }
 
-    let editablePlayerName = <span className="player-name">{playerName}</span>;
+    function handleKeyDown(event) {
+        if (event.key === "Enter") {
+            handleEditClick();
+        }
+    }
+
+    useEffect(() => {
+        if (isEditing && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isEditing]);
+
+    let editablePlayerName = <span onDoubleClick={handleEditClick} className="player-name">{playerName}</span>;
     let buttonName = "Edit";
 
     if (isEditing) {
-        editablePlayerName = <input type="text" required value={playerName} onChange={handleChange} />;
+        editablePlayerName = <input type="text" required
+                                    value={playerName} 
+                                    onChange={handleChange} 
+                                    ref={inputRef} 
+                                    onKeyDown={handleKeyDown}
+                                     />;
         buttonName = "Save";
     }
     return (
         <li className={isActive ? 'active' : undefined}>
+            <span className="player-symbol">{symbol}</span>
             <span className="player">
                 {editablePlayerName}
-                <span className="player-symbol">{symbol}</span>
             </span>
             <button onClick={handleEditClick}>{buttonName}</button>
         </li>
