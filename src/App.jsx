@@ -9,6 +9,19 @@ import GameOver from "./components/GameOver.jsx";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx"
 
+const sounds = {
+  move: new Audio('/sounds/move-sound.mp3'),
+  win: new Audio('/sounds/win-sound.mp3'),
+  drawn: new Audio('/sounds/drawn-sound.mp3'),
+};
+
+
+function playSound(type) {
+  if (sounds[type]) {
+    sounds[type].play();
+  }
+};
+
 const PLAYERS = {
   'X': 'Player 1',
   'O': 'Player 2',
@@ -39,6 +52,7 @@ function derivedWinner(gameBoard, players) {
 
     if (firstCellSymbol && firstCellSymbol === secondCellSymbol && firstCellSymbol === thirdCellSymbol){
       winner = players[firstCellSymbol];
+      playSound('win');
     }
   }
   
@@ -59,6 +73,7 @@ function deriveGameBoard(gameTurns) {
 }
 
 
+
 function App() {
   const [players, setPlayers] = useState(PLAYERS)
   const [gameTurns, setGameTurns] = useState([]);
@@ -70,6 +85,9 @@ function App() {
   const winner = derivedWinner(gameBoard, players);
 
   const matchDrawn = gameTurns.length === 9 && !winner;
+  if (matchDrawn){
+    playSound('drawn');
+  }
   
   function handlePlayerActivity(rowIndex, colIndex) {
     setGameTurns((prevTurns) => {
@@ -77,6 +95,8 @@ function App() {
       const currentPlayer = deriveActivePlayer(prevTurns);
 
       const updatedTurns = [{ square: {row: rowIndex, col: colIndex }, player: currentPlayer }, ...prevTurns,];
+      
+      playSound('move');
 
       return updatedTurns;
 
