@@ -7,7 +7,9 @@ import { WINNING_COMBINATIONS } from "./winning-combinations.js";
 import GameOver from "./components/GameOver.jsx";
 
 import Header from "./components/Header.jsx";
-import Footer from "./components/Footer.jsx"
+import Footer from "./components/Footer.jsx";
+
+import { Analytics } from "@vercel/analytics/react";
 
 const sounds = {
   move: new Audio('/sounds/move-sound.mp3'),
@@ -137,6 +139,7 @@ function App() {
         board={gameBoard} />
     </div>
     <Log playerNames={players} turns={gameTurns} />
+    <Analytics/>
     <Footer />
   </main>;
 }
